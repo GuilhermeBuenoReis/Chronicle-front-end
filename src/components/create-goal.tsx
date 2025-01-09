@@ -16,8 +16,13 @@ import { Button } from './ui/button';
 import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createGoal } from '../http/create-goal';
+import { toast } from 'sonner';
 import { useQueryClient } from '@tanstack/react-query';
+import {
+  getGetWeekPendingGoalsQueryKey,
+  getGetWeekSummaryQueryKey,
+  useCreateGoals,
+} from '../http/generated/api';
 
 const createGoalForm = z.object({
   title: z.string().min(1, 'Informe a atividade que deseja realizar'),
@@ -33,17 +38,31 @@ export function CreateGoal() {
     useForm<CreateGoalForm>({
       resolver: zodResolver(createGoalForm),
     });
+  const { mutateAsync: createGoal } = useCreateGoals();
 
-  async function handleCreateGoal(data: CreateGoalForm) {
-    await createGoal({
-      title: data.title,
-      desiredWeeklyFrequency: data.desiredWeeklyFrequency,
-    });
+  async function handleCreateGoal({
+    title,
+    desiredWeeklyFrequency,
+  }: CreateGoalForm) {
+    try {
+      await createGoal({
+        data: {
+          title,
+          desiredWeeklyFrequency,
+        },
+      });
 
-    queryClient.invalidateQueries({ queryKey: ['summary'] });
-    queryClient.invalidateQueries({ queryKey: ['pending-goals'] });
+      queryClient.invalidateQueries({ queryKey: getGetWeekSummaryQueryKey() });
+      queryClient.invalidateQueries({
+        queryKey: getGetWeekPendingGoalsQueryKey(),
+      });
 
-    reset();
+      reset();
+      toast.success('Meta cadastrada!');
+    } catch (err) {
+      toast.error('Erro ao cadastrar a meta');
+      console.log(err);
+    }
   }
 
   return (

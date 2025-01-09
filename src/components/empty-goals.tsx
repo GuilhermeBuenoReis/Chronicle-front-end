@@ -1,4 +1,4 @@
-import logo from '../assets/logo-in-orbit.svg';
+import logo from '../assets/logo_chronicle.svg';
 import letsStarted from '../assets/lets-start-ilustration.svg';
 import { DialogTrigger } from './ui/dialog';
 import { Button } from './ui/button';
@@ -6,8 +6,11 @@ import { Plus } from 'lucide-react';
 
 export function EmptyGoals() {
   return (
-    <div className=" h-screen flex items-center justify-center gap-8 flex-col">
-      <img src={logo} alt="In.orbit" />
+    <main className=" h-screen flex items-center justify-center gap-8 flex-col">
+      <div className="flex items-center gap-4">
+        <img src={logo} alt="Chronicle" className="w-10 h-10" />
+        <span className="text-2xl font-semibold text-zinc-300">Chronicle</span>
+      </div>
 
       <img src={letsStarted} alt="Lets Started ilustration" />
 
@@ -21,6 +24,6 @@ export function EmptyGoals() {
           Cadastrar meta
         </Button>
       </DialogTrigger>
-    </div>
+    </main>
   );
 }
