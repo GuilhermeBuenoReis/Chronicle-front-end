@@ -41,6 +41,7 @@ export function PendingGoals() {
             key={goal.id}
             disabled={goal.completionCount >= goal.desiredWeeklyFrequency}
             onClick={() => handleCompleteGoal(goal.id)}
+            className="dark:text-zinc-100 text-zinc-900"
           >
             <Plus className="size-4 text-zinc-600" />
             {goal.title}

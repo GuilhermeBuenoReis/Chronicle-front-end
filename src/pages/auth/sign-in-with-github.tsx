@@ -1,6 +1,6 @@
-import logo from '../assets/logo_chronicle.svg';
-import { Button } from '../components/ui/button';
-import github from '../assets/github-logo.svg';
+import logo from '../../assets/logo_chronicle.svg';
+import { Button } from '../../components/ui/button';
+import github from '../../assets/github-logo.svg';
 
 export function SingInWithGithub() {
   const githubUrl = new URL('https://github.com/login/oauth/authorize');

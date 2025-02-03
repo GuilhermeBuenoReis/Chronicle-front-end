@@ -1,8 +1,8 @@
-import { Dialog } from '../components/ui/dialog';
+import { Dialog } from '../../components/ui/dialog';
 
-import { CreateGoal } from '../components/create-goal';
-import { Summary } from '../components/summary';
-import { useGetWeekSummary } from '../http/generated/api';
+import { CreateGoal } from '../../components/create-goal';
+import { Summary } from '../../components/summary';
+import { useGetWeekSummary } from '../../http/generated/api';
 import { useSearchParams } from 'react-router-dom';
 import dayjs from 'dayjs';
 
@@ -21,10 +21,12 @@ export function Application() {
   const getWeekSummary = data?.summary;
 
   return (
-    <Dialog>
-      <Summary summary={getWeekSummary!} />
+    <>
+      <Dialog>
+        <Summary summary={getWeekSummary!} />
 
-      <CreateGoal />
-    </Dialog>
+        <CreateGoal />
+      </Dialog>
+    </>
   );
 }

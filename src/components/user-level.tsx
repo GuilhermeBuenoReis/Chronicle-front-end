@@ -12,9 +12,9 @@ export function UserLevel() {
   );
   return (
     <div className="max-w-[220px] w-full flex flex-col gap-1">
-      <div className="flex w-full items-center justify-between text-xxs text-zinc-200">
+      <div className="flex w-full items-center justify-between text-xxs dark:text-zinc-200">
         <span>Lvl {data.level}</span>
-        <span className="text-zinc-400">
+        <span className="dark:text-zinc-400 ">
           {data.experience}xp de {data.experienceToNextLevel}xp
         </span>
         <span>{porcentage}%</span>

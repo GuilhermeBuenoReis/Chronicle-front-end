@@ -1,7 +1,7 @@
 import { ArrowLeft, ArrowRight, CheckCircle2, Plus } from 'lucide-react';
 import { Button } from './ui/button';
 import { DialogTrigger } from './ui/dialog';
-import { InOrbitIcon } from './in-orbit-icon';
+import logoChronicle from '../assets/logo_chronicle.svg';
 import { Progress, ProgressIndicator } from './ui/progress-bar';
 import { Separator } from './ui/separator';
 import dayjs from 'dayjs';
@@ -74,7 +74,7 @@ export function Summary({ summary }: SummaryProps) {
 
   return (
     <main className="max-w-[600px] mx-auto flex flex-col px-5 gap-6 py-10">
-      <div className="bg-zinc-900 rounded-xl px-4 py-3 flex items-center justify-between">
+      <div className="dark:bg-zinc-950 bg-zinc-50 rounded-xl px-4 py-3 flex items-center justify-between">
         <UserProfile />
         <UserLevel />
       </div>
@@ -82,7 +82,7 @@ export function Summary({ summary }: SummaryProps) {
       <div className="px-5 flex flex-col gap-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <InOrbitIcon />
+            <img src={logoChronicle} alt="Logo chronicle" className="h-9 w-9" />
             <span className="text-lg font-semibold capitalize">
               {firstDayOfWeek} - {lastDayOfWeek}
             </span>
@@ -117,12 +117,17 @@ export function Summary({ summary }: SummaryProps) {
             <ProgressIndicator style={{ width: `${completedPercentage}%` }} />
           </Progress>
 
-          <div className="flex items-center justify-between text-xs text-zinc-400">
+          <div className="flex items-center justify-between text-xs darkdark:text-zinc400 text-zinc-950">
             <span>
               Você completou{' '}
-              <span className="text-zinc-100">{summary?.completed}</span> de{' '}
-              <span className="text-zinc-100">{summary?.total}</span> metas
-              nessa semana.
+              <span className="dark:text-zinc-100 text-zinc-950">
+                {summary?.completed}
+              </span>{' '}
+              de{' '}
+              <span className="dark:text-zinc-100 text-zinc-950">
+                {summary?.total}
+              </span>{' '}
+              metas nessa semana.
             </span>
             <span>{completedPercentage}%</span>
           </div>
@@ -144,7 +149,7 @@ export function Summary({ summary }: SummaryProps) {
                 <div key={date} className="flex flex-col gap-4">
                   <h3 className="font-medium">
                     <span className="capitalize">{weekDay}</span>{' '}
-                    <span className=" text-zinc-400 text-xs">
+                    <span className="dark:text-zinc400 text-zinc-950 text-xs">
                       ({formattedDate})
                     </span>
                   </h3>
@@ -155,10 +160,15 @@ export function Summary({ summary }: SummaryProps) {
                       return (
                         <li key={goal.id} className="flex items-center gap-2">
                           <CheckCircle2 className="size-4 text-pink-500" />
-                          <span className="text-sm text-zinc-400">
+                          <span className="text-sm dark:text-zinc-400 text-zinc-950">
                             Você completou
-                            <span className="text-zinc-100">{goal.title}</span>"
-                            as <span className="text-zinc-100">{time}h</span>
+                            <span className="dark:text-zinc-100 text-zinc-950">
+                              {goal.title}
+                            </span>
+                            " as{' '}
+                            <span className="dark:text-zinc-100 text-zinc-950">
+                              {time}h
+                            </span>
                           </span>
                         </li>
                       );

@@ -22,6 +22,81 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import { http } from '../client';
+export type UpdatedCheckboxFromTask404 = {
+  message: string;
+};
+
+export type UpdatedCheckboxFromTask201UpdatedTask = {
+  content: string;
+  createAt: string;
+  id: string;
+  /** @nullable */
+  is_completed: boolean | null;
+  title: string;
+};
+
+export type UpdatedCheckboxFromTask201 = {
+  updatedTask: UpdatedCheckboxFromTask201UpdatedTask;
+};
+
+export type UpdatedCheckboxFromTaskBody = {
+  is_completed?: boolean;
+};
+
+export type UpdatedCheckboxFromTaskParams = {
+id: string;
+};
+
+/**
+ * @nullable
+ */
+export type CreateNoteByFolder201 = typeof CreateNoteByFolder201[keyof typeof CreateNoteByFolder201] | null;
+
+
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export const CreateNoteByFolder201 = {
+  null: 'null',
+} as const;
+
+export type CreateNoteByFolderBody = {
+  content: string;
+  tags?: string;
+  title: string;
+};
+
+export type CreateNoteByFolderParams = {
+folderId: string;
+};
+
+export type GetNotesWithFolder200ResultItem = {
+  content: string;
+  createdAt: string;
+  /** @nullable */
+  folder_id: string | null;
+  id: string;
+  /** @nullable */
+  tags: string | null;
+  title: string;
+};
+
+export type GetNotesWithFolder200 = {
+  result: GetNotesWithFolder200ResultItem[];
+};
+
+export type GetNotesWithFolderParams = {
+folder_id: string;
+};
+
+export type GetFolders200ResultItem = {
+  createdAt: string;
+  id: string;
+  name: string;
+};
+
+export type GetFolders200 = {
+  result: GetFolders200ResultItem[];
+};
+
 export type DeleteTaskById400 = {
   message: string;
 };
@@ -34,11 +109,11 @@ export type DeleteTaskByIdParams = {
 id: string;
 };
 
-export type UpdatedTask404 = {
+export type UpdatedTaskById404 = {
   message: string;
 };
 
-export type UpdatedTask201UpdatedTask = {
+export type UpdatedTaskById201UpdatedTask = {
   content: string;
   createAt: string;
   id: string;
@@ -47,21 +122,30 @@ export type UpdatedTask201UpdatedTask = {
   title: string;
 };
 
-export type UpdatedTask201 = {
-  updatedTask: UpdatedTask201UpdatedTask;
+export type UpdatedTaskById201 = {
+  updatedTask: UpdatedTaskById201UpdatedTask;
 };
 
-export type UpdatedTaskBody = {
+export type UpdatedTaskByIdBody = {
   content?: string;
   is_completed?: boolean;
   title?: string;
 };
 
-export type UpdatedTaskParams = {
+export type UpdatedTaskByIdParams = {
 id: string;
 };
 
-export type GetTasksRoute200Item = {
+export type GetTasks200Item = {
+  content: string;
+  createAt: string;
+  id: string;
+  /** @nullable */
+  is_completed: boolean | null;
+  title: string;
+};
+
+export type CreateTask201Task = {
   content: string;
   createAt: string;
   id: string;
@@ -72,13 +156,13 @@ export type GetTasksRoute200Item = {
 
 export type CreateTask201 = {
   message: string;
+  task: CreateTask201Task;
 };
 
 export type CreateTaskBody = {
   content: string;
   is_completed: boolean;
   title: string;
-  userId: string;
 };
 
 export type DeleteNoteById400 = {
@@ -161,13 +245,19 @@ export type FindNotesByTagsBody = {
   tags: string;
 };
 
-export type GetNotesRoute200Item = {
+export type GetNotes200ResultItem = {
   content: string;
   createdAt: string;
+  /** @nullable */
+  folderId: string | null;
   id: string;
   /** @nullable */
   tags: string | null;
   title: string;
+};
+
+export type GetNotes200 = {
+  result: GetNotes200ResultItem[];
 };
 
 /**
@@ -183,10 +273,8 @@ export const CreateNote201 = {
 
 export type CreateNoteBody = {
   content: string;
-  folderId?: string;
   tags?: string;
   title: string;
-  userId: string;
 };
 
 export type AuthenticateUserRoute201 = {
@@ -245,7 +333,6 @@ export const CreateFolders201 = {
 
 export type CreateFoldersBody = {
   name: string;
-  userId: string;
 };
 
 export type GetUserLevelAndExperience200 = {
@@ -1216,15 +1303,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 /**
  * Get week summary notes
  */
-export const getGetNotesRouteUrl = () => {
+export const getGetNotesUrl = () => {
 
 
   return `http://localhost:3333/notes/summary`
 }
 
-export const getNotesRoute = async ( options?: RequestInit): Promise<GetNotesRoute200Item[]> => {
+export const getNotes = async ( options?: RequestInit): Promise<GetNotes200> => {
   
-  return http<Promise<GetNotesRoute200Item[]>>(getGetNotesRouteUrl(),
+  return http<Promise<GetNotes200>>(getGetNotesUrl(),
   {      
     ...options,
     method: 'GET'
@@ -1235,64 +1322,64 @@ export const getNotesRoute = async ( options?: RequestInit): Promise<GetNotesRou
 
 
 
-export const getGetNotesRouteQueryKey = () => {
+export const getGetNotesQueryKey = () => {
     return [`http://localhost:3333/notes/summary`] as const;
     }
 
     
-export const getGetNotesRouteQueryOptions = <TData = Awaited<ReturnType<typeof getNotesRoute>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export const getGetNotesQueryOptions = <TData = Awaited<ReturnType<typeof getNotes>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData>>, request?: SecondParameter<typeof http>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetNotesRouteQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetNotesQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotesRoute>>> = ({ signal }) => getNotesRoute({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotes>>> = ({ signal }) => getNotes({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type GetNotesRouteQueryResult = NonNullable<Awaited<ReturnType<typeof getNotesRoute>>>
-export type GetNotesRouteQueryError = unknown
+export type GetNotesQueryResult = NonNullable<Awaited<ReturnType<typeof getNotes>>>
+export type GetNotesQueryError = unknown
 
 
-export function useGetNotesRoute<TData = Awaited<ReturnType<typeof getNotesRoute>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData>> & Pick<
+export function useGetNotes<TData = Awaited<ReturnType<typeof getNotes>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getNotesRoute>>,
+          Awaited<ReturnType<typeof getNotes>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof http>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetNotesRoute<TData = Awaited<ReturnType<typeof getNotesRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData>> & Pick<
+export function useGetNotes<TData = Awaited<ReturnType<typeof getNotes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getNotesRoute>>,
+          Awaited<ReturnType<typeof getNotes>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetNotesRoute<TData = Awaited<ReturnType<typeof getNotesRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export function useGetNotes<TData = Awaited<ReturnType<typeof getNotes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData>>, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetNotesRoute<TData = Awaited<ReturnType<typeof getNotesRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export function useGetNotes<TData = Awaited<ReturnType<typeof getNotes>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotes>>, TError, TData>>, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getGetNotesRouteQueryOptions(options)
+  const queryOptions = getGetNotesQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -1675,15 +1762,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 /**
  * Get tasks
  */
-export const getGetTasksRouteUrl = () => {
+export const getGetTasksUrl = () => {
 
 
   return `http://localhost:3333/task/summary`
 }
 
-export const getTasksRoute = async ( options?: RequestInit): Promise<GetTasksRoute200Item[]> => {
+export const getTasks = async ( options?: RequestInit): Promise<GetTasks200Item[]> => {
   
-  return http<Promise<GetTasksRoute200Item[]>>(getGetTasksRouteUrl(),
+  return http<Promise<GetTasks200Item[]>>(getGetTasksUrl(),
   {      
     ...options,
     method: 'GET'
@@ -1694,64 +1781,64 @@ export const getTasksRoute = async ( options?: RequestInit): Promise<GetTasksRou
 
 
 
-export const getGetTasksRouteQueryKey = () => {
+export const getGetTasksQueryKey = () => {
     return [`http://localhost:3333/task/summary`] as const;
     }
 
     
-export const getGetTasksRouteQueryOptions = <TData = Awaited<ReturnType<typeof getTasksRoute>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export const getGetTasksQueryOptions = <TData = Awaited<ReturnType<typeof getTasks>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData>>, request?: SecondParameter<typeof http>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetTasksRouteQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetTasksQueryKey();
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTasksRoute>>> = ({ signal }) => getTasksRoute({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTasks>>> = ({ signal }) => getTasks({ signal, ...requestOptions });
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type GetTasksRouteQueryResult = NonNullable<Awaited<ReturnType<typeof getTasksRoute>>>
-export type GetTasksRouteQueryError = unknown
+export type GetTasksQueryResult = NonNullable<Awaited<ReturnType<typeof getTasks>>>
+export type GetTasksQueryError = unknown
 
 
-export function useGetTasksRoute<TData = Awaited<ReturnType<typeof getTasksRoute>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData>> & Pick<
+export function useGetTasks<TData = Awaited<ReturnType<typeof getTasks>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getTasksRoute>>,
+          Awaited<ReturnType<typeof getTasks>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof http>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTasksRoute<TData = Awaited<ReturnType<typeof getTasksRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData>> & Pick<
+export function useGetTasks<TData = Awaited<ReturnType<typeof getTasks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getTasksRoute>>,
+          Awaited<ReturnType<typeof getTasks>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetTasksRoute<TData = Awaited<ReturnType<typeof getTasksRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export function useGetTasks<TData = Awaited<ReturnType<typeof getTasks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData>>, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 
-export function useGetTasksRoute<TData = Awaited<ReturnType<typeof getTasksRoute>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasksRoute>>, TError, TData>>, request?: SecondParameter<typeof http>}
+export function useGetTasks<TData = Awaited<ReturnType<typeof getTasks>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getTasks>>, TError, TData>>, request?: SecondParameter<typeof http>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getGetTasksRouteQueryOptions(options)
+  const queryOptions = getGetTasksQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -1766,8 +1853,8 @@ export function useGetTasksRoute<TData = Awaited<ReturnType<typeof getTasksRoute
 /**
  * updated task
  */
-export const getUpdatedTaskUrl = (id: string,
-    params: UpdatedTaskParams,) => {
+export const getUpdatedTaskByIdUrl = (id: string,
+    params: UpdatedTaskByIdParams,) => {
   const normalizedParams = new URLSearchParams();
 
   Object.entries(params || {}).forEach(([key, value]) => {
@@ -1780,35 +1867,35 @@ export const getUpdatedTaskUrl = (id: string,
   return normalizedParams.size ? `http://localhost:3333/task/update/${id}?${normalizedParams.toString()}` : `http://localhost:3333/task/update/${id}`
 }
 
-export const updatedTask = async (id: string,
-    updatedTaskBody: UpdatedTaskBody,
-    params: UpdatedTaskParams, options?: RequestInit): Promise<UpdatedTask201> => {
+export const updatedTaskById = async (id: string,
+    updatedTaskByIdBody: UpdatedTaskByIdBody,
+    params: UpdatedTaskByIdParams, options?: RequestInit): Promise<UpdatedTaskById201> => {
   
-  return http<Promise<UpdatedTask201>>(getUpdatedTaskUrl(id,params),
+  return http<Promise<UpdatedTaskById201>>(getUpdatedTaskByIdUrl(id,params),
   {      
     ...options,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
-      updatedTaskBody,)
+      updatedTaskByIdBody,)
   }
 );}
 
 
 
 
-export const getUpdatedTaskMutationOptions = <TError = UpdatedTask404,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedTask>>, TError,{id: string;data: UpdatedTaskBody;params: UpdatedTaskParams}, TContext>, request?: SecondParameter<typeof http>}
-): UseMutationOptions<Awaited<ReturnType<typeof updatedTask>>, TError,{id: string;data: UpdatedTaskBody;params: UpdatedTaskParams}, TContext> => {
+export const getUpdatedTaskByIdMutationOptions = <TError = UpdatedTaskById404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedTaskById>>, TError,{id: string;data: UpdatedTaskByIdBody;params: UpdatedTaskByIdParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof updatedTaskById>>, TError,{id: string;data: UpdatedTaskByIdBody;params: UpdatedTaskByIdParams}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatedTask>>, {id: string;data: UpdatedTaskBody;params: UpdatedTaskParams}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatedTaskById>>, {id: string;data: UpdatedTaskByIdBody;params: UpdatedTaskByIdParams}> = (props) => {
           const {id,data,params} = props ?? {};
 
-          return  updatedTask(id,data,params,requestOptions)
+          return  updatedTaskById(id,data,params,requestOptions)
         }
 
         
@@ -1816,20 +1903,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdatedTaskMutationResult = NonNullable<Awaited<ReturnType<typeof updatedTask>>>
-    export type UpdatedTaskMutationBody = UpdatedTaskBody
-    export type UpdatedTaskMutationError = UpdatedTask404
+    export type UpdatedTaskByIdMutationResult = NonNullable<Awaited<ReturnType<typeof updatedTaskById>>>
+    export type UpdatedTaskByIdMutationBody = UpdatedTaskByIdBody
+    export type UpdatedTaskByIdMutationError = UpdatedTaskById404
 
-    export const useUpdatedTask = <TError = UpdatedTask404,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedTask>>, TError,{id: string;data: UpdatedTaskBody;params: UpdatedTaskParams}, TContext>, request?: SecondParameter<typeof http>}
+    export const useUpdatedTaskById = <TError = UpdatedTaskById404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedTaskById>>, TError,{id: string;data: UpdatedTaskByIdBody;params: UpdatedTaskByIdParams}, TContext>, request?: SecondParameter<typeof http>}
 ): UseMutationResult<
-        Awaited<ReturnType<typeof updatedTask>>,
+        Awaited<ReturnType<typeof updatedTaskById>>,
         TError,
-        {id: string;data: UpdatedTaskBody;params: UpdatedTaskParams},
+        {id: string;data: UpdatedTaskByIdBody;params: UpdatedTaskByIdParams},
         TContext
       > => {
 
-      const mutationOptions = getUpdatedTaskMutationOptions(options);
+      const mutationOptions = getUpdatedTaskByIdMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1899,6 +1986,333 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
       > => {
 
       const mutationOptions = getDeleteTaskByIdMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * Get folder
+ */
+export const getGetFoldersUrl = () => {
+
+
+  return `http://localhost:3333/folder/summary`
+}
+
+export const getFolders = async ( options?: RequestInit): Promise<GetFolders200> => {
+  
+  return http<Promise<GetFolders200>>(getGetFoldersUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetFoldersQueryKey = () => {
+    return [`http://localhost:3333/folder/summary`] as const;
+    }
+
+    
+export const getGetFoldersQueryOptions = <TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFoldersQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFolders>>> = ({ signal }) => getFolders({ signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetFoldersQueryResult = NonNullable<Awaited<ReturnType<typeof getFolders>>>
+export type GetFoldersQueryError = unknown
+
+
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFolders>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getFolders>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetFolders<TData = Awaited<ReturnType<typeof getFolders>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFolders>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetFoldersQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Get notes with folder
+ */
+export const getGetNotesWithFolderUrl = (params: GetNotesWithFolderParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  return normalizedParams.size ? `http://localhost:3333/notes/summary/?${normalizedParams.toString()}` : `http://localhost:3333/notes/summary/`
+}
+
+export const getNotesWithFolder = async (params: GetNotesWithFolderParams, options?: RequestInit): Promise<GetNotesWithFolder200> => {
+  
+  return http<Promise<GetNotesWithFolder200>>(getGetNotesWithFolderUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+export const getGetNotesWithFolderQueryKey = (params: GetNotesWithFolderParams,) => {
+    return [`http://localhost:3333/notes/summary/`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetNotesWithFolderQueryOptions = <TData = Awaited<ReturnType<typeof getNotesWithFolder>>, TError = unknown>(params: GetNotesWithFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData>>, request?: SecondParameter<typeof http>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetNotesWithFolderQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNotesWithFolder>>> = ({ signal }) => getNotesWithFolder(params, { signal, ...requestOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetNotesWithFolderQueryResult = NonNullable<Awaited<ReturnType<typeof getNotesWithFolder>>>
+export type GetNotesWithFolderQueryError = unknown
+
+
+export function useGetNotesWithFolder<TData = Awaited<ReturnType<typeof getNotesWithFolder>>, TError = unknown>(
+ params: GetNotesWithFolderParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getNotesWithFolder>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetNotesWithFolder<TData = Awaited<ReturnType<typeof getNotesWithFolder>>, TError = unknown>(
+ params: GetNotesWithFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getNotesWithFolder>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetNotesWithFolder<TData = Awaited<ReturnType<typeof getNotesWithFolder>>, TError = unknown>(
+ params: GetNotesWithFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+
+export function useGetNotesWithFolder<TData = Awaited<ReturnType<typeof getNotesWithFolder>>, TError = unknown>(
+ params: GetNotesWithFolderParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getNotesWithFolder>>, TError, TData>>, request?: SecondParameter<typeof http>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetNotesWithFolderQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * Create note by folder
+ */
+export const getCreateNoteByFolderUrl = (params: CreateNoteByFolderParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  return normalizedParams.size ? `http://localhost:3333/folder/note/create?${normalizedParams.toString()}` : `http://localhost:3333/folder/note/create`
+}
+
+export const createNoteByFolder = async (createNoteByFolderBody: CreateNoteByFolderBody,
+    params: CreateNoteByFolderParams, options?: RequestInit): Promise<CreateNoteByFolder201> => {
+  
+  return http<Promise<CreateNoteByFolder201>>(getCreateNoteByFolderUrl(params),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      createNoteByFolderBody,)
+  }
+);}
+
+
+
+
+export const getCreateNoteByFolderMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNoteByFolder>>, TError,{data: CreateNoteByFolderBody;params: CreateNoteByFolderParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof createNoteByFolder>>, TError,{data: CreateNoteByFolderBody;params: CreateNoteByFolderParams}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createNoteByFolder>>, {data: CreateNoteByFolderBody;params: CreateNoteByFolderParams}> = (props) => {
+          const {data,params} = props ?? {};
+
+          return  createNoteByFolder(data,params,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateNoteByFolderMutationResult = NonNullable<Awaited<ReturnType<typeof createNoteByFolder>>>
+    export type CreateNoteByFolderMutationBody = CreateNoteByFolderBody
+    export type CreateNoteByFolderMutationError = unknown
+
+    export const useCreateNoteByFolder = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNoteByFolder>>, TError,{data: CreateNoteByFolderBody;params: CreateNoteByFolderParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof createNoteByFolder>>,
+        TError,
+        {data: CreateNoteByFolderBody;params: CreateNoteByFolderParams},
+        TContext
+      > => {
+
+      const mutationOptions = getCreateNoteByFolderMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * updated task
+ */
+export const getUpdatedCheckboxFromTaskUrl = (params: UpdatedCheckboxFromTaskParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  return normalizedParams.size ? `http://localhost:3333/task/update/?${normalizedParams.toString()}` : `http://localhost:3333/task/update/`
+}
+
+export const updatedCheckboxFromTask = async (updatedCheckboxFromTaskBody: UpdatedCheckboxFromTaskBody,
+    params: UpdatedCheckboxFromTaskParams, options?: RequestInit): Promise<UpdatedCheckboxFromTask201> => {
+  
+  return http<Promise<UpdatedCheckboxFromTask201>>(getUpdatedCheckboxFromTaskUrl(params),
+  {      
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      updatedCheckboxFromTaskBody,)
+  }
+);}
+
+
+
+
+export const getUpdatedCheckboxFromTaskMutationOptions = <TError = UpdatedCheckboxFromTask404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedCheckboxFromTask>>, TError,{data: UpdatedCheckboxFromTaskBody;params: UpdatedCheckboxFromTaskParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationOptions<Awaited<ReturnType<typeof updatedCheckboxFromTask>>, TError,{data: UpdatedCheckboxFromTaskBody;params: UpdatedCheckboxFromTaskParams}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatedCheckboxFromTask>>, {data: UpdatedCheckboxFromTaskBody;params: UpdatedCheckboxFromTaskParams}> = (props) => {
+          const {data,params} = props ?? {};
+
+          return  updatedCheckboxFromTask(data,params,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatedCheckboxFromTaskMutationResult = NonNullable<Awaited<ReturnType<typeof updatedCheckboxFromTask>>>
+    export type UpdatedCheckboxFromTaskMutationBody = UpdatedCheckboxFromTaskBody
+    export type UpdatedCheckboxFromTaskMutationError = UpdatedCheckboxFromTask404
+
+    export const useUpdatedCheckboxFromTask = <TError = UpdatedCheckboxFromTask404,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatedCheckboxFromTask>>, TError,{data: UpdatedCheckboxFromTaskBody;params: UpdatedCheckboxFromTaskParams}, TContext>, request?: SecondParameter<typeof http>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof updatedCheckboxFromTask>>,
+        TError,
+        {data: UpdatedCheckboxFromTaskBody;params: UpdatedCheckboxFromTaskParams},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdatedCheckboxFromTaskMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

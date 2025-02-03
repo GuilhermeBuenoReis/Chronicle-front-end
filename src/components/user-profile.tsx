@@ -4,8 +4,6 @@ import { Avatar, AvatarImage } from './ui/avatar';
 export function UserProfile() {
   const { data } = useGetProfile();
 
-  console.log(data);
-
   if (!data) {
     return null;
   }
