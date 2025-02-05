@@ -1,50 +1,79 @@
-# React + TypeScript + Vite
+# 🚀 **Chronicle Frontend**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Versão 0.0.0** (Em desenvolvimento)
 
-Currently, two official plugins are available:
+O frontend do **Chronicle** está sendo desenvolvido com **React**, **TypeScript**, **Vite** e diversas bibliotecas modernas para proporcionar uma experiência fluida e interativa. O projeto ainda está em construção, e novas funcionalidades estão sendo implementadas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 📋 **Scripts Disponíveis**
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+| Comando        | Descrição                                   |
+| ------------- | ----------------------------------------- |
+| `npm run dev`  | Inicia o servidor de desenvolvimento.    |
+| `npm run build` | Compila o projeto para produção.         |
+| `npm run lint` | Executa o ESLint para verificar o código. |
+| `npm run preview` | Inicia uma prévia do build gerado. |
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 🛠️ **Tecnologias Utilizadas**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 🔧 **Dependências Principais**
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- **[React](https://react.dev/)**: Biblioteca para construção de interfaces.
+- **[React Router](https://reactrouter.com/)**: Gerenciamento de rotas.
+- **[Zustand](https://zustand-demo.pmnd.rs/)**: Gerenciamento de estado simples e eficiente.
+- **[TanStack Query](https://tanstack.com/query/latest/)**: Gerenciamento de requisições assíncronas.
+- **[Zod](https://zod.dev/)**: Validação de schemas e dados.
+- **[Lucide React](https://lucide.dev/)**: Ícones minimalistas e modernos.
+- **[Tailwind CSS](https://tailwindcss.com/)**: Estilização utilitária para o frontend.
+- **[Radix UI](https://www.radix-ui.com/)**: Componentes acessíveis e estilizados.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+### 🔧 **Dependências de Desenvolvimento**
+
+- **[Vite](https://vitejs.dev/)**: Build tool rápida para projetos modernos.
+- **[ESLint](https://eslint.org/)**: Análise estática para manter código limpo.
+- **[TypeScript](https://www.typescriptlang.org/)**: Superset do JavaScript com tipagem estática.
+
+---
+
+## 🚀 **Como Rodar o Projeto**
+
+1. **Clone o repositório**:
+
+   ```bash
+   git clone https://github.com/GuilhermeBuenoReis/Chronicle-front-end.git
+   cd Chronicle-frontend
+   ```
+
+2. **Instale as dependências**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Inicie o servidor de desenvolvimento**:
+
+   ```bash
+   npm run dev
+   ```
+
+---
+
+## 📌 **Status do Projeto**
+
+Atualmente, o desenvolvimento do frontend está em progresso. Algumas funcionalidades podem estar incompletas ou sujeitas a alterações futuras.
+
+---
+
+## 📧 **Contato**
+
+Caso tenha dúvidas ou sugestões, entre em contato pelo e-mail:
+**[guilhermebuenoreis@gmail.com](mailto:guilhermebuenoreis@gmail.com)**
+
+---
+
+**Feito por Guilherme Bueno**  
+🔗 [GitHub](https://github.com/GuilhermeBuenoReis/Chronicle-front-end)
+
