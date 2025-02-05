@@ -43,7 +43,7 @@ O frontend do **Chronicle** está sendo desenvolvido com **React**, **TypeScript
 1. **Clone o repositório**:
 
    ```bash
-   git clone https://github.com/GuilhermeBuenoReis/Chronicle-front-end.git
+   https://github.com/GuilhermeBuenoReis/Chronicle-front-end.git
    cd Chronicle-frontend
    ```
 
